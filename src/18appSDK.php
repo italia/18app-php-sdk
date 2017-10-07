@@ -37,27 +37,27 @@ class app18{
   }
   
   protected function Operazione_Errore_01($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   protected function Operazione_Errore_02($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   protected function Operazione_Errore_03($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   protected function Operazione_Errore_04($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   protected function Operazione_Errore_05($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   protected function Operazione_Errore_06($dati_errore){
-    //Implementre metodo
+    //Implementare metodo
   }
   
   private function Chiama_Operazione_Errore($dati_errore){
