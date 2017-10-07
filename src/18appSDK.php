@@ -17,12 +17,6 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-ini_set('soap.wsdl_cache_enabled',0);
-ini_set('soap.wsdl_cache_ttl',0);
-error_reporting(-1);
-
 class app18{
   function __construct($location_url, $certificato_ssl, $passphrase, $wdsl_url, $pi_esercente, $log_path) {
     
@@ -40,6 +34,53 @@ class app18{
     $this->pi_esercente = $pi_esercente;
     $this->log_path     = $log_path;
     $this->client       = new SoapClient($wdsl_url, $options);
+  }
+  
+  protected function Operazione_Errore_01($dati_errore){
+    //Implementre metodo
+  }
+  
+  protected function Operazione_Errore_02($dati_errore){
+    //Implementre metodo
+  }
+  
+  protected function Operazione_Errore_03($dati_errore){
+    //Implementre metodo
+  }
+  
+  protected function Operazione_Errore_04($dati_errore){
+    //Implementre metodo
+  }
+  
+  protected function Operazione_Errore_05($dati_errore){
+    //Implementre metodo
+  }
+  
+  protected function Operazione_Errore_06($dati_errore){
+    //Implementre metodo
+  }
+  
+  private function Chiama_Operazione_Errore($dati_errore){
+    switch ($dati_errore['info_esito']['codice']) {
+      case '01':
+        $this->Operazione_Errore_01($dati_errore);
+        break;
+      case '02':
+        $this->Operazione_Errore_02($dati_errore);
+        break;
+      case '03':
+        $this->Operazione_Errore_03($dati_errore);
+        break;
+      case '04':
+        $this->Operazione_Errore_04($dati_errore);
+        break;
+      case '05':
+        $this->Operazione_Errore_05($dati_errore);
+        break;
+      case '06':
+        $this->Operazione_Errore_06($dati_errore);
+        break;
+    }
   }
   
   private function Esegui_Operazione($operazione, $codice_voucher, $importo = NULL){
@@ -84,28 +125,25 @@ class app18{
         
         error_log("\n\tDettagli Errore:\n" .
                   "\n\t\tException code: " . $e->detail->FaultVoucher->exceptionCode .
-                  "\n\t\tException Message: " . $e->detail->FaultVoucher->exceptionMessage . "\n\n", 3, $log_path);
+                  "\n\t\tException Message: " . $e->detail->FaultVoucher->exceptionMessage . "\n\n", 3, $this->log_path);
+        
+        $this->Chiama_Operazione_Errore($output);
       }
   
     return $output;
   }
             
-  public function Operazione_Di_Controllo($codice_voucher, $importo = NULL){
+  public final function Operazione_Di_Controllo($codice_voucher, $importo = NULL){
     return $this->Esegui_Operazione(1, $codice_voucher,  $importo);
   }
   
-  public function Operazione_Di_Transazione($codice_voucher, $importo = NULL){
+  public final function Operazione_Di_Transazione($codice_voucher, $importo = NULL){
     return $this->Esegui_Operazione(2, $codice_voucher, $importo);
   }
   
-  public function Operazione_Di_Impegno($codice_voucher, $importo = NULL){
-    return $this->Esegui_Operazione(3, $codice_voucher, $importo);
+  public final function Operazione_Di_Attivazione(){
+    return $this->Esegui_Operazione(1, '11aa22bb', NULL);
   }
-  
-  public function Operazione_Di_Attivazione($codice_voucher){
-    return $this->Esegui_Operazione(1, $codice_voucher, NULL);
-  }
-  
 }
 
 ?>
