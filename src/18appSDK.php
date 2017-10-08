@@ -5,15 +5,16 @@
 *  Copyright Pasquale De Rose 2017
 *
 *  This program is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation, version 3 of the License.
+*  it under the terms of the GNU Lesser Public License as published by
+*  the Free Software Foundation; either version 3 of the License, or
+*  (at your option) any later version.
 *
 *  This program is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
+*  GNU Lesser Public License for more details.
 *
-*  You should have received a copy of the GNU General Public License
+*  You should have received a copy of the GNU Lesser Public License
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
@@ -160,7 +161,11 @@ class app18{
                 "\n\t\tImporto: " . $data['checkReq']['importo'] . "\n", 3, $this->log_path);
                 
       try{
-        $result = $this->client->Check($data);
+        if(($operazione == 1 && $importo == NULL) || $operazione == 2){
+          $result = $this->client->Check($data);
+        }else{
+          $result = $this->client->Confirm($data);
+        }
     
         error_log("\nRisultato operazione:" . 
                   "\n\t\tNominativo Beneficiario: ". $result->checkResp->nominativoBeneficiario .
@@ -195,21 +200,34 @@ class app18{
    *                 successo oppure negativo in caso contrario
    *                 Altri elementi che descrivono l'esito dell'operazione
    */
-  public final function Operazione_Di_Controllo($codice_voucher, $importo = NULL){
-    return $this->Esegui_Operazione(1, $codice_voucher,  $importo);
+  public final function Operazione_Di_Controllo($codice_voucher){
+    return $this->Esegui_Operazione(1, $codice_voucher,  NULL);
   }
   
   /**
    * 
-   * Funzione da richiamare per effettuare una transazione
+   * Funzione da richiamare per effettuare una transazione dall'importo parziale
    * @param string $codice_voucher Codice del voucher da validare
    * @param float $importo Importo da scalare 
    * @return array : Primo elemento positivo in caso di operazione eseguita con 
    *                 successo oppure negativo in caso contrario
    *                 Altri elementi che descrivono l'esito dell'operazione
    */
-  public final function Operazione_Di_Transazione($codice_voucher, $importo = NULL){
-    return $this->Esegui_Operazione(2, $codice_voucher, $importo);
+  public final function Operazione_Di_Transazione_Parziale($codice_voucher, $importo){
+    return $this->Esegui_Operazione(1, $codice_voucher, $importo);
+  }
+  
+  /**
+   * 
+   * Funzione da richiamare per effettuare una transazione del totale dell'importo
+   * @param string $codice_voucher Codice del voucher da validare
+   * @param float $importo Importo da scalare 
+   * @return array : Primo elemento positivo in caso di operazione eseguita con 
+   *                 successo oppure negativo in caso contrario
+   *                 Altri elementi che descrivono l'esito dell'operazione
+   */
+  public final function Operazione_Di_Transazione_Totale($codice_voucher){
+    return $this->Esegui_Operazione(2, $codice_voucher, NULL);
   }
   
   /**
