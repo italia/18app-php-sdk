@@ -17,7 +17,21 @@
 *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/**
+ * 
+ */
 class app18{
+    /**
+     * Costruttore della classe app18
+     * 
+     * @param string $location_url Url del webServer SOAP
+     * @param string $certificato_ssl Url del certificato dell'esercente
+     * @param string $passphrase Password del certificato dell'esercente
+     * @param string $wdsl_url Url del WDSL
+     * @param string $pi_esercente Partita IVA dell'esercente
+     * @param string $log_path Url del file di log
+     * @return NULL
+     */
   function __construct($location_url, $certificato_ssl, $passphrase, $wdsl_url, $pi_esercente, $log_path) {
     
     $options = array(
@@ -36,30 +50,60 @@ class app18{
     $this->client       = new SoapClient($wdsl_url, $options);
   }
   
+  /**
+   * Operazione da implementare in caso di errore nel formato dei parametri in input
+   */
   protected function Operazione_Errore_01($dati_errore){
-    //Implementare metodo
+    //Implementare metodo nell'app
   }
   
+  /**
+   * Operazione da implementare in caso di buono non disponibile sul sistema poichè
+   * è stato già riscosso oppure annullato
+   */
   protected function Operazione_Errore_02($dati_errore){
-    //Implementare metodo
+    //Implementare metodo nell'app
   }
   
+  /**
+   * Operazione da implementare in caso di impossibilità ad attivare l'esercente.
+   * Dati non corretti o esercente già attivato
+   */
   protected function Operazione_Errore_03($dati_errore){
-    //Implementare metodo
+    //Implementare metodo nell'app
   }
   
+  /**
+   * Operazione da implementare in caso di importo richiesto superiore all'importo
+   * del buono selezionato
+   */
   protected function Operazione_Errore_04($dati_errore){
     //Implementare metodo
   }
   
+  /**
+   * Operazione da implementare in caso di impossibilità a verificare o a consumare 
+   * il buono poichè l'esercente non risulta attivo
+   */
   protected function Operazione_Errore_05($dati_errore){
     //Implementare metodo
   }
   
+  /**
+   * Operazione da implementare in caso di ambito e bene del buono non coincidenti
+   * con ambiti e beni trattati dall'esercente
+   */
   protected function Operazione_Errore_06($dati_errore){
     //Implementare metodo
   }
   
+  /*
+   * Funzione che ricevuti i dati di errori chiama le varie operazioni in base 
+   * all'errore ricevuto. 
+   * 
+   * 
+   * @return NULL
+   **/
   private function Chiama_Operazione_Errore($dati_errore){
     switch ($dati_errore['info_esito']['codice']) {
       case '01':
@@ -83,6 +127,16 @@ class app18{
     }
   }
   
+  /**
+   * 
+   * @param int $operazione Identificatore operazione da seguire
+   * @param string $codice_voucher Codice voucher 18App
+   * @param int $importo Importo dell'operazione
+   * @return array : Primo elemento positivo in caso di operazione eseguita con 
+   *                 successo oppure negativo in caso contrario
+   *                 Altri elementi che descrivono l'esito dell'operazione
+   *                
+   */
   private function Esegui_Operazione($operazione, $codice_voucher, $importo = NULL){
     $data = array(
       'checkReq' => array(
@@ -133,19 +187,39 @@ class app18{
     return $output;
   }
             
+  /**
+   * Funziona da richiamare per verificare l'importo di un voucher
+   * @param string $codice_voucher Codice del voucher da verificare
+   * @param float $importo Importo da verificare 
+   * @return array : Primo elemento positivo in caso di operazione eseguita con 
+   *                 successo oppure negativo in caso contrario
+   *                 Altri elementi che descrivono l'esito dell'operazione
+   */
   public final function Operazione_Di_Controllo($codice_voucher, $importo = NULL){
     return $this->Esegui_Operazione(1, $codice_voucher,  $importo);
   }
   
+  /**
+   * 
+   * Funzione da richiamare per effettuare una transazione
+   * @param string $codice_voucher Codice del voucher da validare
+   * @param float $importo Importo da scalare 
+   * @return array : Primo elemento positivo in caso di operazione eseguita con 
+   *                 successo oppure negativo in caso contrario
+   *                 Altri elementi che descrivono l'esito dell'operazione
+   */
   public final function Operazione_Di_Transazione($codice_voucher, $importo = NULL){
     return $this->Esegui_Operazione(2, $codice_voucher, $importo);
   }
   
+  /**
+   *Operazione da richiamare per attivare un esercente 
+   *  @return array : Primo elemento positivo in caso di operazione eseguita con 
+   *                 successo oppure negativo in caso contrario
+   *                 Altri elementi che descrivono l'esito dell'operazione
+   * 
+   */
   public final function Operazione_Di_Attivazione(){
     return $this->Esegui_Operazione(1, '11aa22bb', NULL);
   }
 }
-
-?>
-    
-    
