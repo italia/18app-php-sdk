@@ -174,21 +174,20 @@ class app18{
                   "\n\t\Bene: " . $result->checkResp->bene                                      .
                   "\n\t\tImporto: " . $result->checkResp->importo . "\n", 3, $this->log_path);
         
-        $output['esito']      = 'positivo';
+        $output['esito']      = true;
         $output['info_esito'] = $result;
         
       }catch(\SoapFault $e){
-        $output['esito']      = 'negativo';
-        $output['info_esito'] = array('codice' => $e->detail->FaultVoucher->exceptionCode,
-                                      'errore' => $e->detail->FaultVoucher->exceptionMessage);
+        $output['esito']      = false;
+        $output['info_esito'] = array('codice' => $e->faultcode,
+                                      'errore' => $e->faultstring);
         
         error_log("\n\tDettagli Errore:\n" .
-                  "\n\t\tException code: " . $e->detail->FaultVoucher->exceptionCode .
-                  "\n\t\tException Message: " . $e->detail->FaultVoucher->exceptionMessage . "\n\n", 3, $this->log_path);
+                  "\n\t Codice Errore: " . $e->faultcode .
+                  "\n\t\Messaggio Errore: " . $e->faultstring . "\n\n", 3, $this->log_path);
         
         $this->Chiama_Operazione_Errore($output);
       }
-  
     return $output;
   }
             
