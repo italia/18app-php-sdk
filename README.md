@@ -30,16 +30,19 @@ Metodi
 
 Hai appena creato un oggetto. I suoi metodi sono: :
 
-    Operazione_Di_Controllo($codice_voucher, $importo);
+    Operazione_Di_Controllo($codice_voucher);
     //Attraveso questa Funzione puoi controllare se il buono e' stato speso
 
-    Operazione_Di_Transazione($codice_voucher, $importo);
+    Operazione_Di_Transazione_Parziale($codice_voucher, $importo);
+    //Così Puoi andare a utilizzare un voucher parzialmente
+
+    Operazione_Di_Transazione_Totale($codice_voucher, $importo);
     //Così Puoi andare a utilizzare un voucher
 
     Operazione_Di_Impegno($codice_voucher, $importo); //Ancora non disponibile
     //Puoi Impegnare un voucher attraverso questa funzione
 
-    Operazione_Di_Attivazione($codice_voucher);
+    Operazione_Di_Attivazione();
     //Puoi accreditarti come esercente attraverso questa funzione
 
 Gestione Degli errori
@@ -59,12 +62,12 @@ della funzione dell' errore:
         }
 
         function Operazione_Errore_02($dati_errore){
-        /*Implementre metodo 
+        /*Implementre metodo
         il buono richiesto non è disponibile sul sistema o è già stato riscosso o annullato*/
         }
 
         function Operazione_Errore_03($dati_errore){
-        /*Implementre metodo 
+        /*Implementre metodo
         Impossibile attivare l'esercente. Verificare che i dati siano corretti e che l'esercente non sia già stato attivato*/
         }
 
