@@ -19,11 +19,12 @@ Successivamente si deve creare un oggetto di tipo **app18** attraverso :
     $location="Url sito di controllo voucher";
     $certificato="Posizione certificato";
     $pswd="Password del certificato";
+    $wdsl_url="Url wsdl";
     $pi="Partita iva esercente";
     $log_path="Posizione file log";
 
 
-    $test= new app18($location, $certificato, $pswd, $pi, $log_path);
+    $test= new app18($location, $certificato, $pswd, $wdsl_url, $pi, $log_path);
 
 Metodi
 ------
@@ -54,7 +55,7 @@ dallo sviluppatore estendendo la classe app18 e facendo un override
 della funzione dell' errore:
 
     include('18appSDK.php');
-    class new_app18 exstends app 18{
+    class new_app18 exstends app18{
 
         function Operazione_Errore_01($dati_errore){
         /*Implementre metodo
